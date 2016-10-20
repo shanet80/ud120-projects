@@ -14,7 +14,7 @@ import sys
 sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 from sklearn.cluster import KMeans
-
+from sklearn import preprocessing
 
 
 
@@ -52,7 +52,8 @@ for key, value in data_dict.iteritems():
         stocks.append(value['exercised_stock_options'])
 
 
-print min(stocks), max(stocks)
+print "Minimun exercised stocks: {}".format(min(stocks))
+print "Maximum excercised stocks: {}".format(max(stocks))
 
 salary = []
 for key, value in data_dict.iteritems():
@@ -61,7 +62,9 @@ for key, value in data_dict.iteritems():
 
         salary.append(value['salary'])
 
-print min(salary), max(salary)
+print ""
+print "Minimum Salary: {}".format(min(salary))
+print "Maximum Salary: {}".format(max(salary))
 
 
 ### the input features we want to use
@@ -73,6 +76,16 @@ poi  = "poi"
 features_list = [poi, feature_1, feature_2, feature_3]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
+
+### Scale salary and stock options
+scale = preprocessing.MinMaxScaler()
+scale.fit_transform(finance_features)
+
+print ""
+print "Scaled Value of $200,000 salary: {}".format(scale.scale_[0] * 200000)
+print "Scaled value of $1,000,000 exercised stock options: {}".format(scale.scale_[1] * 1000000)
+
+
 
 
 ### in the "clustering with 3 features" part of the mini-project,
