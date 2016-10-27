@@ -26,6 +26,24 @@ labels, features = targetFeatureSplit(data)
 
 
 
-### your code goes here 
+### your code goes here
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import metrics
+from sklearn.cross_validation import train_test_split
 
+features_train, features_test, labels_train, labels_test = train_test_split(
+     features, labels, test_size=0.3, random_state=42)
+
+clf = DecisionTreeClassifier()
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+accuracy = metrics.accuracy_score(pred, labels_test)
+precision = metrics.precision_score(pred, labels_test)
+recall = metrics.recall_score(pred, labels_test)
+
+print "Accuracy Score for overfit decision tree: {}".format(accuracy)
+print "Precision Score for decision tree: {}".format(precision)
+print "Recall Score for decision tree: {}".format(recall)
+print "Total people in testset: {}".format(len(features_test))
